@@ -5,6 +5,7 @@ from itertools import repeat
 from pprint import pprint
 from typing import Iterator, List, Optional, Any
 from parse import compile
+from grid import Grid
 
 from utils import read_dicts_from_input, read_lines_from_input, read_words_from_input
 

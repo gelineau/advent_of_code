@@ -6,15 +6,16 @@ from pathlib import Path
 from pprint import pprint
 from typing import Iterator, List, Optional, Any
 from parse import compile
+import time
 
 import star1
 import star2
 
 
 filenames_star1 = [
-    # "puzzle_simpletest1.txt",
-    # "puzzle_test.txt",
-    # "puzzle.txt",
+    "puzzle_simpletest1.txt",
+    "puzzle_test.txt",
+    "puzzle.txt",
 ]
 
 for filename in filenames_star1:
@@ -33,4 +34,6 @@ for filename in filenames_star2:
     if Path(filename).stat().st_size == 0:
         continue
     print("\n", "*=2=" * 80, "\n")
+    start = time.time()
     print(f"{filename=} {star2.star(filename)=}")
+    print(f"{time.time()-start:.2f} seconds")

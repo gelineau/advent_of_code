@@ -8,38 +8,11 @@ from typing import Iterator, List, Optional, Any
 import networkx
 from parse import compile
 
+from grid import Grid
 from utils import read_dicts_from_input, read_lines_from_input, read_words_from_input
 
 
-class Grid:
-    def __init__(self, input: list[str]):
-        self.values = [[int(char) for char in line] for line in input]
 
-    def row_max(self):
-        return len(self.values)
-
-    def col_max(self):
-        return len(self.values[0])
-
-    def is_in_grid(self, row, column):
-        if row < 0 or column < 0 or row >= self.row_max() or column >= self.col_max():
-            return False
-        return True
-
-    def get(self, row: int, column: int) -> int:
-        if self.is_in_grid(row, column):
-            return self.values[row][column]
-        raise IndexError
-
-    def __repr__(self):
-        result = "\n"
-        for row in range(self.row_max()):
-            result += (
-                "".join(str(self.get(row, column)) for column in range(self.col_max()))
-                + "\n"
-            )
-
-        return result
 
 
 def read_input(filename: str):
@@ -66,7 +39,7 @@ possible_pasts = []
 for move in moves:
     possible_pasts.extend(move * n for n in range(1, 4))
 
-print(possible_pasts)
+# print(possible_pasts)
 
 
 def gest_past_id(past):
@@ -133,7 +106,7 @@ def cost(grid, id1, id2):
     if id2 == origin_id:
         return 100000000000000000000000
     row, col = from_id(id2)
-    print(f"calculating cost for {id1=} {id2=} {row=} {col=}")
+    # print(f"calculating cost for {id1=} {id2=} {row=} {col=}")
 
     return grid.get(row, col)
 
@@ -155,12 +128,12 @@ def move_one_step(grid, row, col, move):
 
 
 def calculate_next_states(grid, row, col, past):
-    print(f"calculating next states for {row=} {col=} {past=}")
+    # print(f"calculating next states for {row=} {col=} {past=}")
     if len(past) < 3:
         move = past[-1]
         try:
             next_row, next_column = move_one_step(grid, row, col, move)
-            print(f"{next_row=} {next_column=} {past+move=}")
+            # print(f"{next_row=} {next_column=} {past+move=}")
             yield next_row, next_column, past + move
         except IndexError:
             pass
@@ -168,7 +141,7 @@ def calculate_next_states(grid, row, col, past):
     for move in turns(past[-1]):
         try:
             next_row, next_column = move_one_step(grid, row, col, move)
-            print(f"{next_row=} {next_column=} {move=}")
+            # print(f"{next_row=} {next_column=} {move=}")
 
             yield next_row, next_column, move
         except IndexError:
@@ -212,6 +185,6 @@ def star(filename: str):
     shortest_path = networkx.dijkstra_path(
         graph, origin_id, destination_id, network_cost
     )
-    pprint([from_id(node) for node in shortest_path])
+    # pprint([from_id(node) for node in shortest_path])
 
-    print(sum(cost(grid, None, node_id) for node_id in shortest_path[1:]))
+    return sum(cost(grid, None, node_id) for node_id in shortest_path[1:])
