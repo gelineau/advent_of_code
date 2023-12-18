@@ -29,7 +29,7 @@ for filename in filenames_star1:
 filenames_star2 = [
     "puzzle_simpletest2.txt",
     "puzzle_test.txt",
-    # "puzzle.txt",
+    "puzzle.txt",
 ]
 for filename in filenames_star2:
     if Path(filename).stat().st_size == 0:
