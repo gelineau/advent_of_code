@@ -1,5 +1,8 @@
+from typing import Iterable
+
+
 class Grid:
-    def __init__(self, input: list[str]):
+    def __init__(self, input: Iterable[str]):
         self.values = [[int(char) for char in line] for line in input]
 
     def row_max(self):
