@@ -1,3 +1,4 @@
+import pickle
 import sys
 from collections import Counter, defaultdict
 from dataclasses import dataclass
@@ -216,7 +217,21 @@ def move_steps(position, n):
         1000_000,
         100_000,
         1000,
+        580,
+        550,
+        530,
+        500,
+        460,
+        420,
+        400,
+        370,
+        350,
+        330,
+        300,
+        290,
+        270,
         250,
+        230,
         200,
         180,
         150,
@@ -277,12 +292,12 @@ number_1 = None
 number_2 = None
 
 # # puzzle.txt
-# index_for_number_1 = 139
-# index_for_number_2 = 140
+index_for_number_1 = 139
+index_for_number_2 = 140
 
 # puzzle_test.txt
-index_for_number_1 = 19
-index_for_number_2 = 20
+# index_for_number_1 = 19
+# index_for_number_2 = 20
 
 new_positions_for_number_1 = None
 new_positions_for_number_2 = None
@@ -321,18 +336,21 @@ def star(filename: str):
 
     sys.setrecursionlimit(1000)
 
-    positions1 = move_steps(start_position, index_for_number_1)
-    new_positions_for_number_1 = calculate_new_positions(positions1)
-    number_1 = count0(positions1)
+    # positions1 = move_steps(start_position, index_for_number_1)
+    # new_positions_for_number_1 = calculate_new_positions(positions1)
+    # number_1 = count0(positions1)
+    #
+    # positions2 = move_steps(start_position, index_for_number_2)
+    # new_positions_for_number_2 = calculate_new_positions(positions2)
+    # number_2 = count0(positions2)
+    #
+    # pprint(new_positions_for_number_1)
+    # pprint(new_positions_for_number_2)
+    #
+    # print(f"{number_1=} {number_2=}")
 
-    positions2 = move_steps(start_position, index_for_number_2)
-    new_positions_for_number_2 = calculate_new_positions(positions2)
-    number_2 = count0(positions2)
+    ######################################################
 
-    pprint(new_positions_for_number_1)
-    pprint(new_positions_for_number_2)
-
-    print(f"{number_1=} {number_2=}")
     old_rows_sums = []
     old_sum = 0
     old_sum1 = 0
@@ -439,67 +457,148 @@ def star(filename: str):
     # # pprint(sorted([(cell, len(p)) for cell, p in state.positions.items()]))
     # print(sorted(state.positions[(0, -2)]))
 
-    print(f"{number_1=} {number_2=}")
-    old_rows_sums = []
-    old_sum = [0, 0, 0, 0, 0]
-    diffs = [[], [], [], [], []]
-    for step in range(100):
-        positions = move_steps(start_position, step)
-        print(f"{step=}, {count(positions)=}")
-        # for cell in sorted(positions.keys()):
-        #     print(cell, count_one_grid(cell, positions), end=", ")
+    ###############################
 
-        row_nb = len({cell[0] for cell in positions if cell[1] == 0})
-        print(f"{row_nb=}")
-        assert step < 50 or row_nb == 1 + (step // 11) * 2
+    # print(f"{number_1=} {number_2=}")
+    # old_rows_sums = []
+    # old_sum = [0, 0, 0, 0, 0]
+    # diffs = [[], [], [], [], []]
+    # for step in range(100):
+    #     positions = move_steps(start_position, step)
+    #     print(f"{step=}, {count(positions)=}")
+    #     # for cell in sorted(positions.keys()):
+    #     #     print(cell, count_one_grid(cell, positions), end=", ")
+    #
+    #     row_nb = len({cell[0] for cell in positions if cell[1] == 0})
+    #     print(f"{row_nb=}")
+    #     # assert step < 50 or row_nb == 1 + (step // 11) * 2
+    #
+    #     for test_row in [0, 1, -1, 2, -2]:
+    #         cols_of_row = sorted(cell[1] for cell in positions if cell[0] == test_row)
+    #         numbers_of_row = [len(positions[(test_row, col)]) for col in cols_of_row]
+    #         print(f"{step=} {test_row=} {sum(numbers_of_row)}")
+    #
+    #         diffs[test_row].append(sum(numbers_of_row) - old_sum[test_row])
+    #         old_sum[test_row] = sum(numbers_of_row)
+    #
+    # pprint(diffs)
+    #
+    # for period in range(100):
+    #     if all(
+    #         diffs[test_row][-period:] == diffs[test_row][-2 * period : -period]
+    #         for test_row in [0, 1, -1, 2, -2]
+    #     ):
+    #         print("period=", period)
+    #         break
+    #
+    # sum_on_period = [sum(diff[-period:]) for diff in diffs]
+    #
+    # print(sum_on_period)
+    #
+    # for step in range(1000):
+    #     positions = move_steps(start_position, step)
+    #     print(f"{step=}, {count(positions)=}")
+    #
+    #     row_nb = len({cell[0] for cell in positions if cell[1] == 0})
+    #     print(f"{row_nb=}")
+    #     # assert step < 50 or row_nb == 1 + (step // 11) * 2
+    #
+    #     for test_row in [0, 1, -1, 2, -2]:
+    #         cols_of_row = sorted(cell[1] for cell in positions if cell[0] == test_row)
+    #         numbers_of_row = [len(positions[(test_row, col)]) for col in cols_of_row]
+    #
+    #         if step > 100 - period:
+    #             if step == 90:
+    #                 print(90)
+    #             i = step - (len(diffs[test_row]) - period)
+    #             calculated = (
+    #                 sum(diffs[test_row][: -period + 1])
+    #                 + (i // period) * sum_on_period[test_row]
+    #                 + sum(diffs[test_row][-period + 1 :][: i % period])
+    #             )
+    #         else:
+    #             calculated = sum(diffs[test_row][: step + 1])
+    #
+    #         print(f"{sum(numbers_of_row)=} {calculated=}")
+    #         assert sum(numbers_of_row) == calculated
+    #         print()
+    #         print()
 
-        for test_row in [0, 1, -1, 2, -2]:
-            cols_of_row = sorted(cell[1] for cell in positions if cell[0] == test_row)
-            numbers_of_row = [len(positions[(test_row, col)]) for col in cols_of_row]
-            print(f"{step=} {test_row=} {sum(numbers_of_row)}")
+    # positions_per_step = []
+    # for step in range(600):
+    #     print(step)
+    #     positions = move_steps(start_position, step)
+    #     positions_per_step.append({cell: len(p) for cell, p in positions.items()})
+    #
+    #     if step > 300 and step%10 == 0:
+    #     # Sauvegarder l'objet dans le fichier avec pickle.dump
+    #         with open("positions.pickle", "wb") as file:
+    #             pickle.dump(positions_per_step, file)
 
-            diffs[test_row].append(sum(numbers_of_row) - old_sum[test_row])
-            old_sum[test_row] = sum(numbers_of_row)
+    with open("positions450.pickle", "rb") as file:
+        loaded_data = pickle.load(file)
 
-    pprint(diffs)
+    pprint(len(loaded_data))
 
-    for period in range(100):
-        if all(
-            diffs[test_row][-period:] == diffs[test_row][-2 * period : -period]
-            for test_row in [0, 1, -1, 2, -2]
-        ):
-            print("period=", period)
-            break
+    for i in range(451):
+        print(i)
+        positions = loaded_data[i]
+        row_min = min(row for row, col in positions)
+        row_max = max(row for row, col in positions)
+        col_min = min(col for row, col in positions)
+        col_max = max(col for row, col in positions)
 
-    sum_on_period = [sum(diff[-period:]) for diff in diffs]
-
-    print(sum_on_period)
-
-    for step in range(1000):
-        positions = move_steps(start_position, step)
-        print(f"{step=}, {count(positions)=}")
-
-        row_nb = len({cell[0] for cell in positions if cell[1] == 0})
-        print(f"{row_nb=}")
-        assert step < 50 or row_nb == 1 + (step // 11) * 2
-
-        for test_row in [0, 1, -1, 2, -2]:
-            cols_of_row = sorted(cell[1] for cell in positions if cell[0] == test_row)
-            numbers_of_row = [len(positions[(test_row, col)]) for col in cols_of_row]
-
-            if step > 100 - period:
-                if step == 90:
-                    print(90)
-                i = step - (len(diffs[test_row]) - period)
-                calculated = (
-                    sum(diffs[test_row][: -period + 1])
-                    + (i // period) * sum_on_period[test_row]
-                    + sum(diffs[test_row][-period + 1 :][: i % period])
-                )
-            else:
-                calculated = sum(diffs[test_row][: step + 1])
-
-            print(f"{sum(numbers_of_row)=} {calculated=}")
-            assert sum(numbers_of_row) == calculated
+        for row in range(row_min, row_max + 1):
+            for col in range(col_min, col_max + 1):
+                print(f"{str(positions.get((row,col), '')):^8}", end="")
             print()
-            print()
+
+    for i in range(26501365, 26501366):
+        n = 1 + (i - 1) // 131
+
+        to_copy = loaded_data[(i - 328) % 131 + 328 - 131]
+        print(f"{i=} {n=} {(i - 328) % 131 + 328 -131=}")
+        # expected = sum(loaded_data[i].values())
+        center, second = (7450, 7421) if i % 2 == 0 else (7421, 7450)
+
+        n_to_copy = 1 + ((i - 328) % 131 + 328 - 131 - 1) // 131
+
+        print(f"{center=} {second=}")
+        if i == 394:
+            print("")
+        calculated = (
+            get(to_copy, -n_to_copy, 0)
+            + get(to_copy, n_to_copy, 0)
+            + get(to_copy, 0, n_to_copy)
+            + get(to_copy, 0, -n_to_copy)
+            + (n - 1)
+            * (
+                get(to_copy, -(n_to_copy - 1), -1)
+                + get(to_copy, -(n_to_copy - 1), 1)
+                + get(to_copy, (n_to_copy - 1), 1)
+                + get(to_copy, (n_to_copy - 1), -1)
+            )
+            + get(to_copy, -(n_to_copy - 1), 0)
+            + get(to_copy, (n_to_copy - 1), 0)
+            + get(to_copy, 0, (n_to_copy - 1))
+            + get(to_copy, 0, -(n_to_copy - 1))
+            + (n - 2)
+            * (
+                get(to_copy, -(n_to_copy - 2), -1)
+                + get(to_copy, -(n_to_copy - 2), 1)
+                + get(to_copy, (n_to_copy - 2), 1)
+                + get(to_copy, (n_to_copy - 2), -1)
+            )
+            + center * (2 * (n // 2) - 1) ** 2
+            + second * (2 * ((n - 1) // 2)) ** 2
+        )
+        # assert expected == calculated
+        return calculated
+
+
+def get(positions, row, col):
+    return positions.get((row, col), 0)
+
+
+# 608597755415413 too low
+# 608603023105276

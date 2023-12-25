@@ -10,7 +10,6 @@ import time
 
 import star1
 import star2
-import star3
 
 
 filenames_star1 = [
@@ -28,7 +27,7 @@ for filename in filenames_star1:
     print(f"{time.time()-start:.2f} seconds")
 
 filenames_star2 = [
-    "puzzle_simpletest2.txt",
+    # "puzzle_simpletest2.txt",
     # "puzzle_test.txt",
     "puzzle.txt",
 ]
@@ -37,5 +36,5 @@ for filename in filenames_star2:
         continue
     print("\n", "*=2=" * 80, "\n")
     start = time.time()
-    print(f"{filename=} {star3.star(filename)=}")
+    print(f"{filename=} {star2.star(filename)=}")
     print(f"{time.time()-start:.2f} seconds")
