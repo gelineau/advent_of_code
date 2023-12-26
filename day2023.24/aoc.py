@@ -27,7 +27,7 @@ for filename in filenames_star1:
     print(f"{time.time()-start:.2f} seconds")
 
 filenames_star2 = [
-    "puzzle_simpletest2.txt",
+    # "puzzle_simpletest2.txt",
     "puzzle_test.txt",
     "puzzle.txt",
 ]

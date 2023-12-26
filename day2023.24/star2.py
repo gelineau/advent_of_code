@@ -109,24 +109,56 @@ def star(filename: str):
                 -1,
                 p(number, x),
                 -v(number, x),
-                1,
+                # 1,
                 -p(number, y),
+                0,
+                0,
+                0,
+                # 0,
             ]
         )
-        vec.append(p(number, y) * v(number, x) - p(number, x) * v(1, y))
+        vec.append(-p(number, y) * v(number, x) + p(number, x) * v(number, y))
+        m.append(
+            [
+                v(number, z),
+                0,
+                0,
+                0,
+                # 0,
+                -p(number, z),
+                -1,
+                p(number, x),
+                -v(number, x),
+                # 1,
+            ]
+        )
+        vec.append(-p(number, z) * v(number, x) + p(number, x) * v(number, z))
 
     m = np.array(m)
     vec = np.array(vec)
 
-    print(m)
-    print(vec)
+    print(f"{m=}")
+    print(f"{vec=}")
+    print(f"{m[0:8]=}")
 
     print(f"{np.linalg.matrix_rank(m)=}")
+    print(f"{np.linalg.matrix_rank(m[:8])=}")
 
-    m_inv = np.linalg.inv(m)
-    print(f"{np.linalg.det(m)=}")
+    m_inv = np.linalg.inv(m[:8])
+    print(f"{np.linalg.det(m[:8])=}")
 
-    result = np.dot(m_inv, vec)
+    result = np.dot(m_inv, vec[:8])
     print(f"{result=}")
+    print(f"{result[0],result[3], result[7]=}")
 
-    print(m.dot(result), vec)
+    # print(m.dot(result), vec)
+
+    # equations = []
+    # for p, v in input:
+    #     equations.append(f"(p1-{p[x]})*({v[y]}-v2) = ({v[x]}-v1)*(p2-{p[y]})")
+    #     equations.append(f"(p1-{p[x]})*({v[z]}-v3) = ({v[x]}-v1)*(p3-{p[z]})")
+    # print(" , ".join(equations))
+
+
+# https://www.wolframalpha.com/
+# https://www.numberempire.com/equationsolver.php
