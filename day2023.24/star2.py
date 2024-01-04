@@ -102,54 +102,94 @@ def star(filename: str):
     print(input)
     m = []
     vec = []
+    # for number in range(len(input)):
+    #     m.append(
+    #         [
+    #             v(number, y),  # p0x
+    #             # -1,
+    #             p(number, x),
+    #             -v(number, x),  # p0y
+    #             # 1,
+    #             -p(number, y),
+    #             # 0,
+    #             0,
+    #             0,  # p0z
+    #             # 0,
+    #         ]
+    #     )
+    #     vec.append(-p(number, y) * v(number, x) + p(number, x) * v(number, y))
+    #     m.append(
+    #         [
+    #             v(number, z),
+    #             # 0,
+    #             0,
+    #             0,
+    #             # 0,
+    #             -p(number, z),
+    #             # -1,
+    #             p(number, x),
+    #             -v(number, x),
+    #             # 1,
+    #         ]
+    #     )
+    #     vec.append(-p(number, z) * v(number, x) + p(number, x) * v(number, z))
+
     for number in range(len(input)):
         m.append(
             [
-                v(number, y),
-                -1,
+                v(number, y),  # p0x
+                # -1,
                 p(number, x),
-                -v(number, x),
+                -v(number, x),  # p0y
                 # 1,
                 -p(number, y),
-                0,
-                0,
-                0,
-                # 0,
             ]
         )
         vec.append(-p(number, y) * v(number, x) + p(number, x) * v(number, y))
-        m.append(
-            [
-                v(number, z),
-                0,
-                0,
-                0,
-                # 0,
-                -p(number, z),
-                -1,
-                p(number, x),
-                -v(number, x),
-                # 1,
-            ]
-        )
-        vec.append(-p(number, z) * v(number, x) + p(number, x) * v(number, z))
-
     m = np.array(m)
     vec = np.array(vec)
 
     print(f"{m=}")
     print(f"{vec=}")
-    print(f"{m[0:8]=}")
+    # print(f"{m[0:8]=}")
 
     print(f"{np.linalg.matrix_rank(m)=}")
-    print(f"{np.linalg.matrix_rank(m[:8])=}")
 
-    m_inv = np.linalg.inv(m[:8])
-    print(f"{np.linalg.det(m[:8])=}")
+    print(f"{np.linalg.inv(m[:4])=}")
+    m_inv = np.linalg.inv(m[:4])
+    print(f"{np.dot(m_inv, vec[:4])}")
+    print(f"{np.dot(m_inv, np.array([1,1,1,1]))}")
 
-    result = np.dot(m_inv, vec[:8])
-    print(f"{result=}")
-    print(f"{result[0],result[3], result[7]=}")
+    t1 = np.dot(m_inv, vec[:4])
+    t2 = np.dot(m_inv, np.array([1, 1, 1, 1]))
+
+    # print([1 / v for v in t2])
+    for i in range(4):
+        print(f"x_{i+1} = {t1[i]} + a * ({t2[i]})")
+    print(f"a = x_3 * x_1 - x_4 * x_6")
+
+    # print(f"{np.linalg.matrix_rank(m[:6])=}")
+    #
+    # m_inv = np.linalg.inv(m[:6])
+    # print(f"{np.linalg.det(m[:6])=}")
+    # #
+    # result = np.dot(m_inv, vec[:6])
+    # print(f"{result=}")
+    # print(f"{result[0],result[2], result[5]=}")
+
+    # for lines in itertools.combinations(range(len(input)), 6):
+    #     if np.linalg.matrix_rank(m[list(lines), :]) != 6:
+    #         continue
+    #     m_inv = np.linalg.inv(m[list(lines), :])
+    #     # print(f"{np.linalg.det(m[start:start+6])=}")
+    #     #
+    #
+    #     result = np.dot(m_inv, vec[list(lines)])
+    #     # print(f"{result=}")
+    #     if all(abs(int(p) - p) < 0.01 for p in result):
+    #         print(f"{np.linalg.matrix_rank(m[list(lines), :])=}")
+    #
+    #         print(f"{result[0],result[2], result[5]=}")
 
     # print(m.dot(result), vec)
 
@@ -162,3 +202,6 @@ def star(filename: str):
 
 # https://www.wolframalpha.com/
 # https://www.numberempire.com/equationsolver.php
+
+# 2730374965553014 too high
+   684195328708898
